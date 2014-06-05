@@ -1,0 +1,33 @@
+#Hot stocks from barchart
+
+hotStocks=$(curl -s http://www.barchart.com/stocks/hotstocks | grep "symbols=" | awk -F"symbols=" '{print $2}' | awk -F";" '{print $1}')
+hotTop=$(echo $hotStocks | awk -F" " '{print $1}')
+hotBottom=$(echo $hotStocks | awk -F" " '{print $2}')
+hotTop=$(echo $hotTop | tr "," " ")
+hotBottom=$(echo $hotBottom | tr "," " ")
+
+#Signal stocks from barchart
+
+signalStocks=$(curl -s http://www.barchart.com/stocks/signals/ | grep "symbols=" | awk -F"symbols=" '{print $2}' | awk -F";" '{print $1}')
+signalTop=$(echo $signalStocks | awk -F" " '{print $1}')
+signalBottom=$(echo $signalStocks | awk -F" " '{print $2}')
+signalTop=$(echo $signalTop | tr "," " ")
+signalBottom=$(echo $signalBottom | tr "," " ")
+
+#Mad Money's stock picks
+
+mmSell=$(curl -s "http://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500" | grep "/quote/" | grep "icons/1" | awk -F"symbol=" '{print $2}' | awk -F'"' '{print $1}')
+mmNeg=$(curl -s "http://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500" | grep "/quote/" | grep "icons/2" | awk -F"symbol=" '{print $2}' | awk -F'"' '{print $1}')
+mmHold=$(curl -s "http://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500" | grep "/quote/" | grep "icons/3" | awk -F"symbol=" '{print $2}' | awk -F'"' '{print $1}')
+mmPos=$(curl -s "http://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500" | grep "/quote/" | grep "icons/4" | awk -F"symbol=" '{print $2}' | awk -F'"' '{print $1}')
+mmBuy=$(curl -s "http://madmoney.thestreet.com/screener/index.cfm?showview=stocks&showrows=500" | grep "/quote/" | grep "icons/5" | awk -F"symbol=" '{print $2}' | awk -F'"' '{print $1}')
+
+echo Hot Top Stocks : $hotTop
+echo Hot Bottom Stocks : $hotBottom
+echo Signal Top Stocks : $signalTop
+echo Signal Bottom Stocks : $signalBottom
+echo Mad Money Buy : $mmBuy
+echo Mad Money Positive : $mmPos
+echo Mad Money Hold : $mmHold
+echo Mad Money Negative : $mmNeg
+echo Mad Money Sell : $mmSell
